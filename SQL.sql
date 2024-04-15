@@ -329,3 +329,18 @@ ON customers(last_name, first_name);
 ALTER TABLE customers -- drop INDEX
 DROP INDEX last_name_first_name_idx;
 
+
+--* subquery: a query within another query
+-- only showing sub-query
+SELECT 
+    first_name, last_name, hourly_pay,
+    (SELECT AVG(hourly_pay) FROM employees) AS avg_pay
+FROM employees;
+
+-- comparing with the sub-query
+SELECT 
+    first_name, last_name, hourly_pay,
+FROM employees;
+WHERE hourly_pay >= (SELECT AVG(hourly_pay) FROM employees);
+
+SELECT * FROM transactions
