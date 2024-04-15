@@ -239,7 +239,11 @@ FROM transactions;
 SELECT CONCAT(first_name, " ", last_name) AS full_name -- added a space between words
 FROM employees;
 
--- AND / OR / NOT
+-- AND / OR / NOT / BETWEEN / IN
 SELECT *
 FROM employees
 WHERE hire_date < "2023-01-5" AND job = "cook";
+
+WHERE NOT job = "manager" AND NOT job = "asst. manager";
+WHERE hire_date BETWEEN "2023-01-04" AND "2023-01-07";
+WHERE job in ("cook", "cashier", "janitor");
