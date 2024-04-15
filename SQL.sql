@@ -247,3 +247,14 @@ WHERE hire_date < "2023-01-5" AND job = "cook";
 WHERE NOT job = "manager" AND NOT job = "asst. manager";
 WHERE hire_date BETWEEN "2023-01-04" AND "2023-01-07";
 WHERE job in ("cook", "cashier", "janitor");
+
+
+--* wild characters % _ | %: 0,n chars | _: 1 char
+SELECT *
+FROM employees
+WHERE first_name LIKE "s%"; -- names that begins with letter "s"
+
+WHERE hire_date LIKE "2023%"
+WHERE hire_date LIKE "____-01-__"; -- dates in january
+WHERE job LIKE "_a%"; -- second char "a"
+
