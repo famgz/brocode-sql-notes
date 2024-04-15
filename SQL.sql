@@ -41,7 +41,7 @@ ALTER TABLE employees
 DROP COLUMN email;
 
 -- insert row with all data
-INSET INTO employees
+INSET INTO employees -- not specifying the columns will require to input all
 VALUES (1, "Eugene", "Krabs", 25.50, "2023-01-02");
 
 -- insert multiple rows with all data, will error if any column missing
@@ -155,3 +155,63 @@ CREATE TABLE employees (
 ALTER TABLE employees
 ADD CONSTRAINT chk_hourly_pay CHECK(hourly_pay >= 10.00);
 
+-- remove CHECK constraint
+ALTER TABLE employees
+DROP CHECK chk_hourly_pay
+
+-- DEFAULT constraint at creation
+CREATE TABLE products (
+    product_id INT,
+    product_name VARCHAR(25),
+    price DECIMAL(4, 2) DEFAULT 0.0,
+    insert_date DATETIME DEFAULT NOW()
+);
+
+-- DEFAULT constraint afterwards
+ALTER TABLE products
+ALTER price SET DEFAULT 0.00;
+ALTER insert_date SET DEFAULT NOW();
+
+-- PRIMARY constraint at creation
+CREATE TABLE transactions(
+    transaction_id INT PRIMARY KEY, -- can only have 1 per table
+    amout DECIMAL(5, 2)
+)
+
+-- PRIMARY constraint afterwards
+ALTER TABLE transactions
+ADD CONSTRAINT
+PRIMARY KEY(transaction_id);
+
+-- AUTO_INCREMENT feature
+CREATE TABLE transactions(
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT, -- defaults to starts with 1
+    amout DECIMAL(5, 2)
+);
+
+-- to begin with specific value
+ALTER TABLE transactions
+AUTO_INCREMENT = 1000;
+
+
+
+--* FOREIGN KEY
+CREATE TABLE transactions(
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    amout DECIMAL(5, 2),
+    customer_id INT
+    FOREIGN KEY(customer_id) REFERENCES customers(customer_id) -- will apply a default name `transactions_ibfk_1`
+);
+
+-- drop FOREIGN KEY
+ALTER TABLE transactions
+DROP FOREIGN KEY transactions_ibfk_1; -- auto generated key name
+
+-- give FOREIGN KEY an unique name
+ALTER TABLE transactions
+ADD CONSTRAINT fk_customer_id
+FOREIGN KEY(customer_id) REFERENCES customers(customer_id);
+
+
+
+--* JOIN
