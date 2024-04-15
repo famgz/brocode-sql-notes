@@ -311,3 +311,21 @@ FROM employees;
 SELECT * FROM employee_attendance;
 
 DROP VIEW employee_attendace; -- remove VIEW
+
+
+--* INDEX: BTree data structure
+-- indexes are used to find values within a specific column more quickly
+-- MySQL normally searches sequentially through a column
+-- the longer the column, the more expensive the operation is
+-- UPDATE takes more time, SELECT takes less time
+CREATE INDEX last_name_idx -- single column index
+ON customers(last_name);
+
+SHOW INDEXES FROM customers;
+
+CREATE INDEX last_name_first_name_idx -- multiple column index
+ON customers(last_name, first_name);
+
+ALTER TABLE customers -- drop INDEX
+DROP INDEX last_name_first_name_idx;
+
