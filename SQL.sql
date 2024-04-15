@@ -288,7 +288,9 @@ UNION ALL
 SELECT first_name, last_name FROM customers;
 
 
---* SELF JOIN: join another copy of a table to itself. used to compare rows of the same table. helps display hierarchy of data
+--* SELF JOIN: join another copy of a table to itself.
+-- used to compare rows of the same table.
+-- helps display hierarchy of data
 SELECT 
     a.customer_id, 
     CONCAT(a.first_name, " ", a.last_name), 
@@ -296,3 +298,16 @@ SELECT
 FROM customers AS a
 INNER JOIN customers AS b -- b is the copy
 ON a.referral_id = b.customer_id;
+
+
+--* VIEW: virtual table based on the result-set of an SQL statement.
+-- the fields in a view are fields from one or more real tables in the database.
+-- they're not real tables, but can be interacted with as if they were
+-- when change values in the real table, the view will update the changes
+CREATE VIEW employee_attendance AS
+SELECT first_name, last_name
+FROM employees;
+
+SELECT * FROM employee_attendance;
+
+DROP VIEW employee_attendace; -- remove VIEW
