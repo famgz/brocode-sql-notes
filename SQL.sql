@@ -258,3 +258,32 @@ WHERE hire_date LIKE "2023%"
 WHERE hire_date LIKE "____-01-__"; -- dates in january
 WHERE job LIKE "_a%"; -- second char "a"
 
+
+--* ORDER BY
+SELECT *
+FROM employees
+ORDER BY last_name DESC;  -- ASC (default) | DESC
+
+ORDER BY amount DESC, customer_id ASC; -- second order option to resolve equal values
+
+
+--* LIMIT clause (pagination)
+SELECT *
+FROM customers
+ORDER BY last_name DESC
+LIMIT 10; -- show 10 first entries
+
+LIMIT 5, 10; -- offset (start, amount) : show 10 entries after the 5th
+
+
+--* UNION operator: combine results of two or more SELECT statements
+-- tables has same amount of columns and similar data types
+SELECT * FROM income
+UNION
+SELECT * FROM expenses; 
+
+-- tables with differents amount of columns. UNION won't includes duplicates | UNION ALL includes duplicates
+SELECT first_name, last_name FROM employees
+UNION ALL
+SELECT first_name, last_name FROM customers;
+
