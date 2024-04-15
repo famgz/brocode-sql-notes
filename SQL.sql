@@ -287,3 +287,12 @@ SELECT first_name, last_name FROM employees
 UNION ALL
 SELECT first_name, last_name FROM customers;
 
+
+--* SELF JOIN: join another copy of a table to itself. used to compare rows of the same table. helps display hierarchy of data
+SELECT 
+    a.customer_id, 
+    CONCAT(a.first_name, " ", a.last_name), 
+    CONCAT(b.first_name, " ", b.last_name) AS "referred_by"
+FROM customers AS a
+INNER JOIN customers AS b -- b is the copy
+ON a.referral_id = b.customer_id;
