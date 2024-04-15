@@ -215,3 +215,31 @@ FOREIGN KEY(customer_id) REFERENCES customers(customer_id);
 
 
 --* JOIN
+-- INNER JOIN
+SELECT transaction_id, amount, first_name, last_name
+FROM transactions INNER JOIN customers
+ON transactions.customer_id = customers.customer_id;
+
+-- LEFT/RIGHT  JOIN
+SELECT transaction_id, amount, first_name, last_name
+FROM transactions LEFT JOIN customers
+ON transactions.customer_id = customers.customer_id;
+
+
+--* functions
+-- COUNT
+SELECT COUNT(amount) AS count -- alias
+FROM transactions;
+
+-- MAX / MIN / AVG / SUM
+SELECT MAX(amount) AS maximum
+FROM transactions;
+
+-- CONCAT
+SELECT CONCAT(first_name, " ", last_name) AS full_name -- added a space between words
+FROM employees;
+
+-- AND / OR / NOT
+SELECT *
+FROM employees
+WHERE hire_date < "2023-01-5" AND job = "cook";
