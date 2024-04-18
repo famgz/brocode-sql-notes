@@ -103,6 +103,7 @@ ROLLBACACK; -- restore to the previous safe point
 
 
 
+
 --* dates and times
 CREATE TABLE test(
     my_date DATE,
@@ -113,6 +114,7 @@ CREATE TABLE test(
 -- get current dates and times
 INSERT INTO test
 VALUES(CURRENT_DATE(), CURRENT_TIME(), NOW()); -- CURRENT_DATE() + 1 : tomorrow | CURRENT_TIME() - 2000 (seconds)
+
 
 
 --* constraints
@@ -195,6 +197,7 @@ AUTO_INCREMENT = 1000;
 
 
 
+
 --* FOREIGN KEY
 CREATE TABLE transactions(
     transaction_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -214,6 +217,7 @@ FOREIGN KEY(customer_id) REFERENCES customers(customer_id);
 
 
 
+
 --* JOIN
 -- INNER JOIN
 SELECT transaction_id, amount, first_name, last_name
@@ -224,6 +228,7 @@ ON transactions.customer_id = customers.customer_id;
 SELECT transaction_id, amount, first_name, last_name
 FROM transactions LEFT JOIN customers
 ON transactions.customer_id = customers.customer_id;
+
 
 
 --* functions
@@ -249,6 +254,7 @@ WHERE hire_date BETWEEN "2023-01-04" AND "2023-01-07";
 WHERE job in ("cook", "cashier", "janitor");
 
 
+
 --* wild characters % _ | %: 0,n chars | _: 1 char
 SELECT *
 FROM employees
@@ -259,12 +265,14 @@ WHERE hire_date LIKE "____-01-__"; -- dates in january
 WHERE job LIKE "_a%"; -- second char "a"
 
 
+
 --* ORDER BY
 SELECT *
 FROM employees
 ORDER BY last_name DESC;  -- ASC (default) | DESC
 
 ORDER BY amount DESC, customer_id ASC; -- second order option to resolve equal values
+
 
 
 --* LIMIT clause (pagination)
@@ -274,6 +282,7 @@ ORDER BY last_name DESC
 LIMIT 10; -- show 10 first entries
 
 LIMIT 5, 10; -- offset (start, amount) : show 10 entries after the 5th
+
 
 
 --* UNION operator: combine results of two or more SELECT statements
@@ -288,6 +297,7 @@ UNION ALL
 SELECT first_name, last_name FROM customers;
 
 
+
 --* SELF JOIN: join another copy of a table to itself.
 -- used to compare rows of the same table.
 -- helps display hierarchy of data
@@ -298,6 +308,7 @@ SELECT
 FROM customers AS a
 INNER JOIN customers AS b -- b is the copy
 ON a.referral_id = b.customer_id;
+
 
 
 --* VIEW: virtual table based on the result-set of an SQL statement.
@@ -311,6 +322,7 @@ FROM employees;
 SELECT * FROM employee_attendance;
 
 DROP VIEW employee_attendace; -- remove VIEW
+
 
 
 --* INDEX: BTree data structure
@@ -330,6 +342,7 @@ ALTER TABLE customers -- drop INDEX
 DROP INDEX last_name_first_name_idx;
 
 
+
 --* subquery: a query within another query
 -- only showing sub-query
 SELECT 
@@ -346,6 +359,7 @@ WHERE hourly_pay >= (SELECT AVG(hourly_pay) FROM employees);
 SELECT * FROM transactions
 
 
+
 --* GROUP BY: aggregate all rows by a specific column
 -- often used with aggregate functions ex.: SUM MAX MIN AVG COUNT
 SELECT SUM(amount), order_date
@@ -354,11 +368,13 @@ GROUP BY order_date
 HAVING COUNT(amount) > 1 AND customer_id IS NOT NULL; -- use HAVING instead of WHERE (will error along with GROUP BY)
 
 
+
 --* ROLL UP: extension of the GROUP BY clause
 -- produces another row and shows the GRAND TOTAL (super-aggregate value)
 SELECT SUM(amount), order_date
 FROM transactions
 GROUP BY order_date WITH ROLLUP; -- will show grand totals below
+
 
 
 --* ON DELETE
@@ -381,3 +397,32 @@ ALTER TABLE transactions
 ADD CONSTRAINT fk_customer_id
 FOREIGN KEY(customer_id) REFERENCES customers(customer_id)
 ON DELETE SET NULL;
+
+
+
+--* Stored procedure: is prepared SQL that you can save, kind of snippet
+-- useful if there's a query that you write often
+DELIMTER $$ -- temporary change de delimeter ";"" so it won't end the statement. $$ is convention, people also use //
+CREATE PROCEDURE get_customers()
+BEGIN
+    SELECT * FROM customers;
+END $$
+DELIMETER ;
+
+CALL get_customers();
+
+-- drop procedure
+DROP PROCEDURE get_customers;
+
+-- procedure with parameter
+DELIMETER $$
+CREATE PROCEDURE find_customer(IN f_name VARCHAR(50), IN l_name VARCHAR(50))
+BEGIN
+    SELECT *
+    FROM customers
+    WHERE first_name = f_name AND last_name = l_name;
+END $$
+DELIMETER ;
+
+CALL find_customer("Bob", "Sponge");
+
