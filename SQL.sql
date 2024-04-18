@@ -231,7 +231,7 @@ ON transactions.customer_id = customers.customer_id;
 SELECT COUNT(amount) AS count -- alias
 FROM transactions;
 
--- MAX / MIN / AVG / SUM
+-- MAX / MIN / AVG / SUM / COUNT
 SELECT MAX(amount) AS maximum
 FROM transactions;
 
@@ -344,3 +344,11 @@ FROM employees;
 WHERE hourly_pay >= (SELECT AVG(hourly_pay) FROM employees);
 
 SELECT * FROM transactions
+
+
+--* GROUP BY: aggregate all rows by a specific column
+-- often used with aggregate functions ex.: SUM MAX MIN AVG COUNT
+SELECT SUM(amount), order_date
+FROM transactions
+GROUP BY order_date
+HAVING COUNT(amount) > 1 AND customer_id IS NOT NULL; -- use HAVING instead of WHERE (will error along with GROUP BY)
