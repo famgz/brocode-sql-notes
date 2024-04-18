@@ -426,3 +426,21 @@ DELIMETER ;
 
 CALL find_customer("Bob", "Sponge");
 
+
+
+--* TRIGGER: when an event happens, do something
+-- benefits: checks data, handles erros, auditing tables
+CREATE TRIGGER bebore_hourly_pay_update
+BEFORE UDPATE ON employees -- BEFORE/AFTER  INSERT/DELETE/UPDATE...
+FOR EACH ROW
+SET NEW.salary = (NEW.hourly_pay * 2080); -- NEW/OLD is used to differentiate fields.  | oobs.: there are 2080 working hours in a year
+
+-- show TRIGGERS
+SHOW TRIGGERS;
+
+CREATE TRIGGER after_salary_delete
+AFTER DELETE ON employees
+FOR EACH ROW
+UPDATE expenses
+SET expense_total = expense_total - OLD.salary
+WHERE expense_name = "salaries";
