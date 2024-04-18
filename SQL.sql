@@ -360,3 +360,24 @@ SELECT SUM(amount), order_date
 FROM transactions
 GROUP BY order_date WITH ROLLUP; -- will show grand totals below
 
+
+--* ON DELETE
+-- ON DELETE SET NULL: when a FK is deleted, replace FK with NULL
+-- ON DELETE CASCADE: when a FK is deleted, detele row
+SET foreign_key_checks = 0; -- allow foreign keys deletion
+
+-- apply on table creation
+CREATE TABLE transactions (
+    transaction_id INT PRIMARY KEY,
+    amount DECIMAL(5, 2),
+    customer_id INT,
+    order_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    ON DELETE SET NULL
+);
+
+-- apply afterwards
+ALTER TABLE transactions
+ADD CONSTRAINT fk_customer_id
+FOREIGN KEY(customer_id) REFERENCES customers(customer_id)
+ON DELETE SET NULL;
