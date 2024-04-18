@@ -352,3 +352,11 @@ SELECT SUM(amount), order_date
 FROM transactions
 GROUP BY order_date
 HAVING COUNT(amount) > 1 AND customer_id IS NOT NULL; -- use HAVING instead of WHERE (will error along with GROUP BY)
+
+
+--* ROLL UP: extension of the GROUP BY clause
+-- produces another row and shows the GRAND TOTAL (super-aggregate value)
+SELECT SUM(amount), order_date
+FROM transactions
+GROUP BY order_date WITH ROLLUP; -- will show grand totals below
+
